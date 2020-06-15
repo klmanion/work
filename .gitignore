@@ -1,0 +1,27 @@
+# .gitignore
+
+*.swp
+.deps
+*~
+
+# ctags
+tags
+
+# gtags
+GPATH
+GRTAGS
+GTAGS
+
+# automake
+Makefile
+
+# autoconf
+/autom4te.cache
+/compile
+/config.*
+!/config.h.in
+/configure.in
+/stamp-h1
+
+# m4
+autom4te.cache
