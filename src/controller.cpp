@@ -8,6 +8,7 @@
 Controller::Controller()
 {
 	model = Model::get_instance();
+	view = (View *)NULL;
 }
 
 Controller::~Controller()

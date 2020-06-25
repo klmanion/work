@@ -21,6 +21,7 @@ TaskView::~TaskView()
 void
 TaskView::print(void)
 {
+	move(100,100);
 	printw("hello world");
 }
 

@@ -7,7 +7,7 @@
 /* constructor {{{2 */
 Mode::Mode()
 {
-	/* point to model */
+	model = Model::get_instance();
 }
 
 /* destructor {{{2 */

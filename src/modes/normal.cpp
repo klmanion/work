@@ -18,6 +18,7 @@ Normal::Normal()
 int
 Normal::loop(void)
 {
+	clear();
 	controller->handle(getch());
 	tview.print();
 	refresh();
