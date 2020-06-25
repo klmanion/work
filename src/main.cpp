@@ -10,6 +10,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include NCURSES_INCL
+#include "modes/normal.h"
 
 /* forward decls {{{1 */
 static	void	ncurses_initialize (void);
@@ -23,20 +24,18 @@ main(
     int argc,
     char *const argv[])
 {
-	int retv;
+	Normal mode;
 
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
 	ncurses_initialize();
 
-	printw("hello world");
-
-	retv = main_loop();
+	while (mode.loop()) { refresh(); }
 
 	ncurses_deinitialize();
 
-	return retv;
+	return EXIT_SUCCESS;
 }
 
 /* ncurses {{{1 */

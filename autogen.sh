@@ -6,5 +6,5 @@ fi
 
 autoreconf --verbose --force --install || exit 0;
 
-env CXX=clang++ CPPFLAGS="-Wall -pedantic" ./configure "$@"
+env CXX="clang++" CPPFLAGS="-Wall -pedantic" ./configure "$@"
 exit $?;

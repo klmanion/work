@@ -5,3 +5,6 @@ work
 
 # C/C++
 *.o
+
+# autotools
+.dirstamp
