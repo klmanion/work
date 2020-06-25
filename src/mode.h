@@ -16,8 +16,8 @@ public:
 	virtual	int	loop (void) = 0;
 
 protected:
-	Model		*model;
-	Controller	*controller;
+	Model		*_model;
+	Controller	*_controller;
 	/* view objects are in the derrived classes */
 };
 

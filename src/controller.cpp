@@ -7,13 +7,14 @@
 /* constructor {{{2 */
 Controller::Controller()
 {
-	model = Model::get_instance();
-	view = (View *)NULL;
+	_model = Model::get_instance();
+	_view = (View *)NULL;
+	_keymap = (keybind_t *)NULL;
 }
 
 Controller::~Controller()
 {
-	delete view;
+
 }
 
 /* }}}1 */

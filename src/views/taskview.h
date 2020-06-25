@@ -16,7 +16,7 @@ public:
 	void	print (void);
 
 private:
-	Task	*tcur;
+	Task	*_tcur;
 };
 
 #endif /* !_VIEWS_TASKVIEW_H_ */

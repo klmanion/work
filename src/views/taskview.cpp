@@ -7,7 +7,7 @@
 /* constructor {{{2 */
 TaskView::TaskView()
 {
-	tcur = (Task *)NULL;
+	_tcur = (Task *)NULL;
 }
 
 /* destructor {{{2 */
@@ -21,8 +21,7 @@ TaskView::~TaskView()
 void
 TaskView::print(void)
 {
-	move(100,100);
-	printw("hello world");
+
 }
 
 /* }}}1 */

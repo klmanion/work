@@ -31,6 +31,7 @@ main(
 
 	ncurses_initialize();
 
+
 	while (mode.loop()) { }
 
 	ncurses_deinitialize();

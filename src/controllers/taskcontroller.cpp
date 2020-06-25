@@ -6,7 +6,7 @@
 #include "../views/taskview.h"
 
 /* genetic functs {{{1 */
-/* constructor {{{2 */
+/* default ctor {{{2 */
 TaskController::TaskController()
 {
 	static	keybind_t normalkm[] =
@@ -17,11 +17,20 @@ TaskController::TaskController()
 				return 1;
 			    }
 		    },
-		    { (const char)NULL, (const string)NULL, (bind_t)NULL }
+		    { (const char)NULL, "", [](int rep) { return 0;}}
 	    };
 
-	view = new TaskView();
-	keymap = normalkm;
+	_keymap = normalkm;
+}
+
+/* ctor {{{2
+ * 	This constructer should always be used over the default
+ */
+TaskController::TaskController(
+    View	*view)
+    : TaskController()
+{
+	_view = view;
 }
 
 /* destructor {{{2 */
@@ -36,11 +45,15 @@ int
 TaskController::handle(
     const char	ch)
 {
-	for (keybind_t *kb = keymap; kb->ch; ++kb)
+	if (!ch)
+	    return 0;
+
+	for (keybind_t *kb = _keymap; kb->ch; ++kb)
 	    {
 		if (kb->ch == ch)
 		    {
-			kb->funct(1);
+			if (kb->funct)
+			    kb->funct(1);
 			break;
 		    }
 	    }

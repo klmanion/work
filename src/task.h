@@ -15,8 +15,8 @@ public:
 	~Task();
 
 private:
-	string	tag;
-	string	descr;
+	string	_tag;
+	string	_descr;
 };
 
 #endif /* !_TASK_H_ */

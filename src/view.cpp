@@ -7,7 +7,7 @@
 /* constructor {{{2 */
 View::View()
 {
-	model = Model::get_instance();
+	_model = Model::get_instance();
 }
 
 /* destructor {{{2 */

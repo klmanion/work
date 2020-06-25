@@ -15,7 +15,7 @@ public:
 	int	loop (void);
 
 private:
-	TaskView	tview;
+	TaskView	_tview;
 };
 
 #endif /* !_MODES_NORMAL_H_ */

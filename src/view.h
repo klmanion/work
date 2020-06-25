@@ -12,12 +12,12 @@ class View
 {
 public:
 	View();
-	virtual ~View();
+	~View();
 
 	virtual	void	print (void) = 0;
 
 private:
-	Model	*model;
+	Model	*_model;
 	/* TODO: ncurses window */
 };
 

@@ -8,7 +8,10 @@
 
 class TaskController : public virtual Controller
 {
+private:
 	TaskController();
+public:
+	TaskController(View *);
 	~TaskController();
 
 	int	handle (const char);

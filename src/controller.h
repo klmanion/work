@@ -29,9 +29,9 @@ public:
 	virtual	int	handle (const char) = 0;
 
 protected:
-	Model		*model;
-	View		*view;
-	keybind_t	*keymap;
+	Model		*_model;
+	View		*_view;
+	keybind_t	*_keymap;
 };
 
 #endif /* !_CONTROLLER_H_ */

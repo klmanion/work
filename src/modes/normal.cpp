@@ -5,12 +5,13 @@
 
 #include "../system.h"
 #include NCURSES_INCL
+#include "controllers/taskcontroller.h"
 
 /* genetic functs {{{1 */
 /* contructor {{{2 */
 Normal::Normal()
 {
-
+	_controller = new TaskController(&_tview);
 }
 
 /* virtual functs {{{1 */
@@ -18,9 +19,13 @@ Normal::Normal()
 int
 Normal::loop(void)
 {
+	char ch;
+
+	ch = getch();
+
 	clear();
-	controller->handle(getch());
-	tview.print();
+	_controller->handle(ch);
+	_tview.print();
 	refresh();
 
 	return 1;
