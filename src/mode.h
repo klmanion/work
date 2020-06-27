@@ -11,9 +11,9 @@ class Mode
 {
 public:
 	Mode();
-	~Mode();
+	virtual	~Mode();
 
-	virtual	int	loop (void) = 0;
+	virtual	Mode*	loop (void) = 0;
 
 protected:
 	Model		*_model;

@@ -15,8 +15,12 @@ Normal::Normal()
 }
 
 /* virtual functs {{{1 */
-/* loop() {{{2 */
-int
+/* loop() {{{2
+ * 	Returning nullptr causes no change in mode.
+ * 	Returning a mode object switches the active mode.
+ * 	Upon mode switch, the mode is destroyed.
+ */
+Mode*
 Normal::loop(void)
 {
 	char ch;
@@ -28,7 +32,7 @@ Normal::loop(void)
 	_tview.print();
 	refresh();
 
-	return 1;
+	return nullptr;
 }
 
 /* }}}1 */

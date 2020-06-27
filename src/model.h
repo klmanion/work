@@ -15,8 +15,13 @@ public:
 private:
 	Model();
 
+public:
+	bool	is_running (void);
+
 private:
 	/* TODO */
+
+	bool _running;
 };
 
 #endif /* !_MODEL_H_ */

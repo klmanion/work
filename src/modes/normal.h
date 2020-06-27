@@ -7,12 +7,12 @@
 #include "../mode.h"
 #include "../views/taskview.h"
 
-class Normal : Mode
+class Normal : public virtual Mode
 {
 public:
 	Normal();
 
-	int	loop (void);
+	Mode*	loop (void);
 
 private:
 	TaskView	_tview;
