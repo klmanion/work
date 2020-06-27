@@ -103,8 +103,8 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_work_OBJECTS = main.$(OBJEXT) task.$(OBJEXT) model.$(OBJEXT) \
-	mode.$(OBJEXT) modes/normal.$(OBJEXT) view.$(OBJEXT) \
-	views/taskview.$(OBJEXT) controller.$(OBJEXT) \
+	delegate.$(OBJEXT) mode.$(OBJEXT) modes/normal.$(OBJEXT) \
+	view.$(OBJEXT) views/taskview.$(OBJEXT) controller.$(OBJEXT) \
 	controllers/taskcontroller.$(OBJEXT)
 work_OBJECTS = $(am_work_OBJECTS)
 work_LDADD = $(LDADD)
@@ -123,7 +123,8 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/controller.Po ./$(DEPDIR)/main.Po \
+am__depfiles_remade = ./$(DEPDIR)/controller.Po \
+	./$(DEPDIR)/delegate.Po ./$(DEPDIR)/main.Po \
 	./$(DEPDIR)/mode.Po ./$(DEPDIR)/model.Po ./$(DEPDIR)/task.Po \
 	./$(DEPDIR)/view.Po controllers/$(DEPDIR)/taskcontroller.Po \
 	modes/$(DEPDIR)/normal.Po views/$(DEPDIR)/taskview.Po
@@ -268,7 +269,7 @@ top_srcdir = @top_srcdir@
 @DEBUG_FALSE@AM_CPPFLAGS = -DNDEBUG
 @DEBUG_TRUE@AM_CPPFLAGS = -DDEBUG
 AM_LDFLAGS = -lncurses
-work_SOURCES = main.cpp task.cpp model.cpp \
+work_SOURCES = main.cpp task.cpp model.cpp delegate.cpp \
 	       mode.cpp modes/normal.cpp \
 	       view.cpp views/taskview.cpp \
 	       controller.cpp controllers/taskcontroller.cpp
@@ -387,6 +388,7 @@ distclean-compile:
 	-rm -f *.tab.c
 
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/delegate.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mode.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/model.Po@am__quote@ # am--include-marker
@@ -552,6 +554,7 @@ clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
 		-rm -f ./$(DEPDIR)/controller.Po
+	-rm -f ./$(DEPDIR)/delegate.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/mode.Po
 	-rm -f ./$(DEPDIR)/model.Po
@@ -606,6 +609,7 @@ installcheck-am:
 
 maintainer-clean: maintainer-clean-am
 		-rm -f ./$(DEPDIR)/controller.Po
+	-rm -f ./$(DEPDIR)/delegate.Po
 	-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/mode.Po
 	-rm -f ./$(DEPDIR)/model.Po

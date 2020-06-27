@@ -10,13 +10,11 @@
 #include <stdio.h>
 #include <locale.h>
 #include NCURSES_INCL
-#include "modes/normal.h"
+#include "delegate.h"
 
 /* forward decls {{{1 */
 static	void	ncurses_initialize (void);
 static	void	ncurses_deinitialize (void);
-
-static	int	main_loop (void);
 
 /* main() {{{1 */
 int
@@ -24,19 +22,19 @@ main(
     int argc,
     char *const argv[])
 {
-	Normal mode;
-
+	int retv;
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
 	ncurses_initialize();
 
+	Delegate delegate;
 
-	while (mode.loop()) { }
+	retv = delegate.engage();
 
 	ncurses_deinitialize();
 
-	return EXIT_SUCCESS;
+	return retv;
 }
 
 /* ncurses {{{1 */
@@ -66,11 +64,6 @@ ncurses_deinitialize(void)
 	endwin();
 }
 
-/* main_loop() {{{1 */
-static	int
-main_loop()
-{
-	return EXIT_SUCCESS;
-}
+/* }}}1 */
 
 /* vi: set ts=8 sw=8 noexpandtab tw=79: */

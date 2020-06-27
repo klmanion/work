@@ -11,7 +11,7 @@ endif
 AM_LDFLAGS = -lncurses
 
 bin_PROGRAMS = work
-work_SOURCES = main.cpp task.cpp model.cpp \
+work_SOURCES = main.cpp task.cpp model.cpp delegate.cpp \
 	       mode.cpp modes/normal.cpp \
 	       view.cpp views/taskview.cpp \
 	       controller.cpp controllers/taskcontroller.cpp
