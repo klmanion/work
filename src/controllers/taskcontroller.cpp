@@ -1,4 +1,5 @@
 /** controllers taskcontroller.cpp
+ * It is more accurate to call this the task list controller.
  */
 
 #include "taskcontroller.h"
