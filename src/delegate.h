@@ -6,7 +6,6 @@
 #define _DELEGATE_H_
 
 #include "mode.h"
-#include "modes/normal.h"
 
 class Delegate
 {
