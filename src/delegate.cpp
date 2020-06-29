@@ -3,6 +3,8 @@
 
 #include "delegate.h"
 
+#include "modes/normal.h"
+
 /* genetic functs {{{1 */
 /* ctor {{{2 */
 Delegate::Delegate()
