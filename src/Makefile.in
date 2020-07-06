@@ -103,9 +103,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_work_OBJECTS = main.$(OBJEXT) task.$(OBJEXT) model.$(OBJEXT) \
-	delegate.$(OBJEXT) mode.$(OBJEXT) modes/normal.$(OBJEXT) \
-	view.$(OBJEXT) views/taskview.$(OBJEXT) controller.$(OBJEXT) \
-	controllers/taskcontroller.$(OBJEXT)
+	mode.$(OBJEXT) modes/normal.$(OBJEXT)
 work_OBJECTS = $(am_work_OBJECTS)
 work_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -123,11 +121,9 @@ am__v_at_1 =
 DEFAULT_INCLUDES = -I.@am__isrc@ -I$(top_builddir)
 depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
-am__depfiles_remade = ./$(DEPDIR)/controller.Po \
-	./$(DEPDIR)/delegate.Po ./$(DEPDIR)/main.Po \
-	./$(DEPDIR)/mode.Po ./$(DEPDIR)/model.Po ./$(DEPDIR)/task.Po \
-	./$(DEPDIR)/view.Po controllers/$(DEPDIR)/taskcontroller.Po \
-	modes/$(DEPDIR)/normal.Po views/$(DEPDIR)/taskview.Po
+am__depfiles_remade = ./$(DEPDIR)/main.Po ./$(DEPDIR)/mode.Po \
+	./$(DEPDIR)/model.Po ./$(DEPDIR)/task.Po \
+	modes/$(DEPDIR)/normal.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -269,10 +265,8 @@ top_srcdir = @top_srcdir@
 @DEBUG_FALSE@AM_CPPFLAGS = -DNDEBUG
 @DEBUG_TRUE@AM_CPPFLAGS = -DDEBUG
 AM_LDFLAGS = -lncurses
-work_SOURCES = main.cpp task.cpp model.cpp delegate.cpp \
-	       mode.cpp modes/normal.cpp \
-	       view.cpp views/taskview.cpp \
-	       controller.cpp controllers/taskcontroller.cpp
+work_SOURCES = main.cpp task.cpp model.cpp \
+	       mode.cpp modes/normal.cpp
 
 all: all-am
 
@@ -357,22 +351,6 @@ modes/$(DEPDIR)/$(am__dirstamp):
 	@: > modes/$(DEPDIR)/$(am__dirstamp)
 modes/normal.$(OBJEXT): modes/$(am__dirstamp) \
 	modes/$(DEPDIR)/$(am__dirstamp)
-views/$(am__dirstamp):
-	@$(MKDIR_P) views
-	@: > views/$(am__dirstamp)
-views/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) views/$(DEPDIR)
-	@: > views/$(DEPDIR)/$(am__dirstamp)
-views/taskview.$(OBJEXT): views/$(am__dirstamp) \
-	views/$(DEPDIR)/$(am__dirstamp)
-controllers/$(am__dirstamp):
-	@$(MKDIR_P) controllers
-	@: > controllers/$(am__dirstamp)
-controllers/$(DEPDIR)/$(am__dirstamp):
-	@$(MKDIR_P) controllers/$(DEPDIR)
-	@: > controllers/$(DEPDIR)/$(am__dirstamp)
-controllers/taskcontroller.$(OBJEXT): controllers/$(am__dirstamp) \
-	controllers/$(DEPDIR)/$(am__dirstamp)
 
 work$(EXEEXT): $(work_OBJECTS) $(work_DEPENDENCIES) $(EXTRA_work_DEPENDENCIES) 
 	@rm -f work$(EXEEXT)
@@ -380,23 +358,16 @@ work$(EXEEXT): $(work_OBJECTS) $(work_DEPENDENCIES) $(EXTRA_work_DEPENDENCIES)
 
 mostlyclean-compile:
 	-rm -f *.$(OBJEXT)
-	-rm -f controllers/*.$(OBJEXT)
 	-rm -f modes/*.$(OBJEXT)
-	-rm -f views/*.$(OBJEXT)
 
 distclean-compile:
 	-rm -f *.tab.c
 
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/controller.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/delegate.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/main.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mode.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/model.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/task.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/view.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@controllers/$(DEPDIR)/taskcontroller.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@modes/$(DEPDIR)/normal.Po@am__quote@ # am--include-marker
-@AMDEP_TRUE@@am__include@ @am__quote@views/$(DEPDIR)/taskview.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
 	@$(MKDIR_P) $(@D)
@@ -538,12 +509,8 @@ clean-generic:
 distclean-generic:
 	-test -z "$(CONFIG_CLEAN_FILES)" || rm -f $(CONFIG_CLEAN_FILES)
 	-test . = "$(srcdir)" || test -z "$(CONFIG_CLEAN_VPATH_FILES)" || rm -f $(CONFIG_CLEAN_VPATH_FILES)
-	-rm -f controllers/$(DEPDIR)/$(am__dirstamp)
-	-rm -f controllers/$(am__dirstamp)
 	-rm -f modes/$(DEPDIR)/$(am__dirstamp)
 	-rm -f modes/$(am__dirstamp)
-	-rm -f views/$(DEPDIR)/$(am__dirstamp)
-	-rm -f views/$(am__dirstamp)
 
 maintainer-clean-generic:
 	@echo "This command is intended for maintainers to use"
@@ -553,16 +520,11 @@ clean: clean-am
 clean-am: clean-binPROGRAMS clean-generic mostlyclean-am
 
 distclean: distclean-am
-		-rm -f ./$(DEPDIR)/controller.Po
-	-rm -f ./$(DEPDIR)/delegate.Po
-	-rm -f ./$(DEPDIR)/main.Po
+		-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/mode.Po
 	-rm -f ./$(DEPDIR)/model.Po
 	-rm -f ./$(DEPDIR)/task.Po
-	-rm -f ./$(DEPDIR)/view.Po
-	-rm -f controllers/$(DEPDIR)/taskcontroller.Po
 	-rm -f modes/$(DEPDIR)/normal.Po
-	-rm -f views/$(DEPDIR)/taskview.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
 	distclean-tags
@@ -608,16 +570,11 @@ install-ps-am:
 installcheck-am:
 
 maintainer-clean: maintainer-clean-am
-		-rm -f ./$(DEPDIR)/controller.Po
-	-rm -f ./$(DEPDIR)/delegate.Po
-	-rm -f ./$(DEPDIR)/main.Po
+		-rm -f ./$(DEPDIR)/main.Po
 	-rm -f ./$(DEPDIR)/mode.Po
 	-rm -f ./$(DEPDIR)/model.Po
 	-rm -f ./$(DEPDIR)/task.Po
-	-rm -f ./$(DEPDIR)/view.Po
-	-rm -f controllers/$(DEPDIR)/taskcontroller.Po
 	-rm -f modes/$(DEPDIR)/normal.Po
-	-rm -f views/$(DEPDIR)/taskview.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic
 
