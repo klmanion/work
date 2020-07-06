@@ -16,12 +16,17 @@ private:
 	Model();
 
 public:
+	Task&	task_list (void);
+
 	bool	is_running (void);
+	bool	is_empty (void);
+
+	Task&	add_task (Task &);
 
 private:
-	/* TODO */
+	Task	*_task_list;
 
-	bool _running;
+	bool	_running;
 };
 
 #endif /* !_MODEL_H_ */

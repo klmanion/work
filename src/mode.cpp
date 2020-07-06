@@ -16,6 +16,14 @@ Mode::~Mode()
 
 }
 
+/* predicates {{{1 */
+/* is_running() {{{2 */
+bool
+Mode::is_running(void)
+{
+	return _model->is_running();
+}
+
 /* }}}1 */
 
 /* vi: set ts=8 sw=8 noexpandtab tw=79: */

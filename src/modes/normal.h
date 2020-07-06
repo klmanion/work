@@ -5,17 +5,21 @@
 #define _MODES_NORMAL_H_
 
 #include "../mode.h"
-#include "../views/taskview.h"
 
 class Normal : public virtual Mode
 {
 public:
 	Normal();
 
-	Mode*	loop (void);
+	void	loop (void);
+	int	handle (const char);
+	void	print (void);
+
+	Task&	add_task (void);
+	Task&	add_task (Task &);
 
 private:
-	TaskView	_tview;
+	Task	*_tcur;
 };
 
 #endif /* !_MODES_NORMAL_H_ */

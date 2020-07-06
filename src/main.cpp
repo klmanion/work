@@ -10,7 +10,7 @@
 #include <stdio.h>
 #include <locale.h>
 #include NCURSES_INCL
-#include "delegate.h"
+#include "modes/normal.h"
 
 /* forward decls {{{1 */
 static	void	ncurses_initialize (void);
@@ -22,19 +22,17 @@ main(
     int argc,
     char *const argv[])
 {
-	int retv;
 	setlocale(LC_ALL, "");
 	setprogname(argv[0]);
 
 	ncurses_initialize();
 
-	Delegate delegate;
-
-	retv = delegate.engage();
+	for (Mode *mode = new Normal(); mode->is_running(); mode->loop())
+	    mode->print();
 
 	ncurses_deinitialize();
 
-	return retv;
+	return EXIT_SUCCESS;;
 }
 
 /* ncurses {{{1 */
