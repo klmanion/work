@@ -15,9 +15,6 @@ public:
 	int	handle (const char);
 	void	print (void);
 
-	Task&	add_task (void);
-	Task&	add_task (Task &);
-
 private:
 	Task	*_tcur;
 };

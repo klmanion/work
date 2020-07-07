@@ -17,14 +17,22 @@ private:
 
 public:
 	Task&	task_list (void);
+	Task*	cursor (void);
+	void	cursor_set (Task &);
 
 	bool	is_running (void);
-	bool	is_empty (void);
+	bool	no_tasks (void);
 
-	Task&	add_task (Task &);
+	Task&	add_next (Task &);
+	Task&	add_next (void);
+	Task&	add_child (Task &);
+	Task&	add_child (void);
+
+	Task&	new_task (void);
 
 private:
 	Task	*_task_list;
+	Task	*_cursor;
 
 	bool	_running;
 };

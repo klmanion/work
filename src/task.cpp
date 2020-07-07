@@ -6,6 +6,7 @@
 #include "system.h"
 #include NCURSES_INCL
 #include <cstdio>
+#include "model.h"
 
 /* genetic functs {{{1 */
 /* ctors {{{2 */
@@ -82,6 +83,28 @@ Task::~Task()
 	    delete _children;
 }
 
+/* predicates {{{1 */
+/* is_folded() {{{2 */
+bool
+Task::is_folded(void)
+{
+	return _folded;
+}
+
+/* is_selected() {{{2 */
+bool
+Task::is_selected(void)
+{
+	return _selected;
+}
+
+/* is_cursed_over() {{{2 */
+bool
+Task::is_cursed_over(void)
+{
+	return Model::get_instance()->cursor() == this;
+}
+
 /* actions {{{1 */
 /* add_next() {{{2 */
 Task&
@@ -94,18 +117,65 @@ Task::add_next(
 	    return _next->add_next(task);
 }
 
+/* add_child() {{{2 */
+Task&
+Task::add_child(
+    Task	&task)
+{
+	if (!_children)
+	    return *(_children = &task);
+	else
+	    return _children->add_next(task);
+}
+
 /* printing {{{1 */
 /* print {{{2 */
+/* (int) {{{3 */
 void
-Task::print(void)
+Task::print(
+    int	lvl)
 {
-	if (_desc.empty())
-	    printw("%s\n", _tag.c_str());
-	else
-	    printw("%s - %s\n", _tag.c_str(), _desc.c_str());
+	int y,x;
+
+	if (!_tag.empty())
+	    {
+		getyx(stdscr, y,x);
+
+		for (int i=lvl; i>0; --i)
+		    printw("|");
+
+		if (is_selected())
+		    wattron(stdscr, A_BOLD);
+
+		if (!_children)
+		    addch(' ');
+		else if (is_folded())
+		    addch('+');
+		else
+		    addch('-');
+
+		if (is_cursed_over())
+		    wattron(stdscr, A_UNDERLINE);
+
+		printw("%s", _tag.c_str());
+		if (_desc.c_str())
+		    printw(" - %s", _desc.c_str());
+
+
+		if (is_cursed_over())
+		    wattroff(stdscr, A_UNDERLINE);
+
+		if (is_selected())
+		    wattroff(stdscr, A_BOLD);
+
+		move(++y,x);
+	    }
+
+	if (!is_folded() && _children)
+	    _children->print(lvl+1);
 
 	if (_next)
-	    _next->print();
+	    _next->print(lvl);
 }
 
 /* }}}1 */

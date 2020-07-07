@@ -15,13 +15,21 @@ public:
 	Task(int);	/* from file descriptor */
 	~Task();
 
-	Task&	add_next (Task &);
+	bool	is_folded (void);
+	bool	is_selected (void);
+	bool	is_cursed_over (void);
 
-	void	print (void);
+	Task&	add_next (Task &);
+	Task&	add_child (Task &);
+
+	void	print (int = 0);
 
 private:
 	string	_tag;
 	string	_desc;
+
+	bool	_folded;
+	bool	_selected;
 
 	/* cdr */
 	Task	*_next;

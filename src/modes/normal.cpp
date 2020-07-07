@@ -5,8 +5,6 @@
 
 #include "../system.h"
 #include NCURSES_INCL
-#include <cstdio>
-#include <unistd.h>
 
 /* genetic functs {{{1 */
 /* contructor {{{2 */
@@ -23,7 +21,14 @@ Normal::Normal()
 
 		    { 'a',	"add-task",	[this](int rep)
 			    {
-				add_task();
+				_model->add_next();
+				return 1;
+			    }
+		    },
+
+		    { 'c',	"add-child",	[this](int rep)
+			    {
+				_model->add_child();
 				return 1;
 			    }
 		    },
@@ -74,50 +79,11 @@ Normal::print(void)
 {
 	clear();
 	move(0,0);
-	if (!_model->is_empty())
-	    _model->task_list().print();
+	if (!_model->no_tasks())
+	    {
+		_model->task_list().print();
+	    }
 	refresh();
-}
-
-/* action functs {{{1 */
-/* add_task {{{2 */
-/* (void) {{{3 */
-Task&
-Normal::add_task(void)
-{
-	char f_name[80] = "/tmp/tl_task_inp-XXXXXX";
-	int fd;
-	char com[80];	/* make static ? */
-	Task *task;
-
-	fd = mkstemp(f_name);
-
-	snprintf(com, 79, "${EDITOR:-${VISUAL:-nano}} %s", f_name);
-
-	/* suspend ncurses */
-	def_prog_mode();
-	endwin();
-
-	system(com);
-
-	/* resume ncurses */
-	reset_prog_mode();
-
-	task = new Task(fd);
-
-	remove(f_name);
-
-	add_task(*task);
-
-	return *task;
-}
-
-/* (Task &) {{{3 */
-Task&
-Normal::add_task(
-    Task	&task)
-{
-	return _model->add_task(task);
 }
 
 /* }}}1 */
