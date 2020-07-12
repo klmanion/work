@@ -102,10 +102,10 @@ Task::is_selected(void)
 bool
 Task::is_cursed_over(void)
 {
-	return Model::get_instance()->cursor() == this;
+	return Model::get_instance()->cursor_ptr() == this;
 }
 
-/* actions {{{1 */
+/* cdr actions {{{1 */
 /* add_next() {{{2 */
 Task&
 Task::add_next(
@@ -128,9 +128,34 @@ Task::add_child(
 	    return _children->add_next(task);
 }
 
+/* selection {{{1 */
+/* select() {{{2 */
+Task&
+Task::select(void)
+{
+	_selected = true;
+
+	return *this;
+}
+
+/* deselect() {{{2 */
+Task&
+Task::deselect(void)
+{
+	_selected = false;
+
+	return *this;
+}
+
+/* select_toggle() {{{2 */
+Task&
+Task::select_toggle(void)
+{
+	return is_selected() ? deselect() : select();
+}
+
 /* printing {{{1 */
-/* print {{{2 */
-/* (int) {{{3 */
+/* print() {{{2 */
 void
 Task::print(
     int	lvl)

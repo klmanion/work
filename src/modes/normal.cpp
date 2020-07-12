@@ -12,13 +12,6 @@ Normal::Normal()
 {
 	static	keybind_t normalkm[] =
 	    {
-		    { 'h',	"hello-world",	[](int rep)
-			    {
-				printw("hello world");
-				return 1;
-			    }
-		    },
-
 		    { 'a',	"add-task",	[this](int rep)
 			    {
 				_model->add_next();
@@ -33,7 +26,14 @@ Normal::Normal()
 			    }
 		    },
 
-		    { (const char)NULL, "", [](int rep) { return 0;}}
+		    { 's',	"select",	[this](int rep)
+			    {
+				_model->cursor().select_toggle();
+				return 1;
+			    }
+		    },
+
+		    { (const char)NULL, "", [](int rep) { return 0;} }
 	    };
 	
 	_keymap = normalkm;
@@ -80,9 +80,7 @@ Normal::print(void)
 	clear();
 	move(0,0);
 	if (!_model->no_tasks())
-	    {
-		_model->task_list().print();
-	    }
+	    _model->task_list().print();
 	refresh();
 }
 

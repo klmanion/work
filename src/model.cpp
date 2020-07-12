@@ -41,8 +41,15 @@ Model::task_list(void)
 }
 
 /* cursor accessor {{{2 */
-Task*
+Task&
 Model::cursor(void)
+{
+	return *_cursor;
+}
+
+/* cursor pointer accessor {{{2 */
+Task*
+Model::cursor_ptr(void)
 {
 	return _cursor;
 }
@@ -71,7 +78,7 @@ Model::no_tasks(void)
 }
 
 /* actions {{{1 */
-/* add_next {{{2 */
+/* add_next() {{{2 */
 /* setter {{{3 */
 Task&
 Model::add_next(
