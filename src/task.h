@@ -22,6 +22,10 @@ public:
 	Task&	add_next (Task &);
 	Task&	add_child (Task &);
 
+	Task&	select (void);
+	Task&	deselect (void);
+	Task&	select_toggle (void);
+
 	void	print (int = 0);
 
 private:
