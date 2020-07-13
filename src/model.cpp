@@ -55,11 +55,11 @@ Model::cursor_ptr(void)
 }
 
 /* cursor mutator {{{2 */
-void
+Task&
 Model::cursor_set(
     Task	&task)
 {
-	_cursor = &task;
+	return *(_cursor = &task);
 }
 
 /* predicates {{{1 */
@@ -75,45 +75,6 @@ bool
 Model::no_tasks(void)
 {
 	return !_task_list;
-}
-
-/* actions {{{1 */
-/* add_next() {{{2 */
-/* setter {{{3 */
-Task&
-Model::add_next(
-    Task	&task)
-{
-	if (!_task_list)
-	    return *(_task_list = &task);
-	else
-	    return _task_list->add_next(task);
-}
-
-/* creator {{{3 */
-Task&
-Model::add_next(void)
-{
-	return add_next(new_task());
-}
-
-/* add_child() {{{2 */
-/* setter {{{3 */
-Task&
-Model::add_child(
-    Task	&task)
-{
-	if (!_task_list)
-	    return add_next(task);
-	else
-	    return _task_list->add_child(task);
-}
-
-/* creator {{{3 */
-Task&
-Model::add_child(void)
-{
-	return add_child(new_task());
 }
 
 /* new_task() {{{1 */
@@ -143,6 +104,116 @@ Model::new_task(void)
 	remove(f_name);
 
 	return *task;
+}
+
+/* cdr actions {{{1 */
+/* add_next() {{{2 */
+/* setter {{{3 */
+Task&
+Model::add_next(
+    Task	&task)
+{
+	if (no_tasks())
+	    return *(_cursor = _task_list = &task);
+	else
+	    return cursor().next_add(task);
+}
+
+/* creator {{{3 */
+Task&
+Model::add_next(void)
+{
+	return add_next(new_task());
+}
+
+/* add_child() {{{2 */
+/* setter {{{3 */
+Task&
+Model::add_child(
+    Task	&task)
+{
+	if (no_tasks())
+	    return add_next(task);
+	else
+	    return cursor().child_add(task);
+}
+
+/* creator {{{3 */
+Task&
+Model::add_child(void)
+{
+	return add_child(new_task());
+}
+
+/* cursing {{{1 */
+/* _above_coord() {{{2
+ * 	Curses upward while staying within the same list of the hierarchy.
+ * 	If the cursor is on the first element of the list, it will not curse
+ * 	upwards to the task containing the current list.
+ */
+Task&
+Model::curse_above_coord(void)
+{
+	return cursor_set(cursor().above_coord());
+}
+
+/* _above_supord() {{{2
+ * 	Curses upward traversing the hierarchy.
+ * 	If the cursor is on the first element of the list,
+ * 	it will curse to the task containing the current list.
+ */
+Task&
+Model::curse_above_supord(void)
+{
+	return cursor_set(cursor().above_supord());
+}
+
+/* _below_coord() {{{2
+ * 	Curses downward while staying within the same list of the hierarchy.
+ * 	If the cursor is on the last element of the list,
+ * 	it will not jump out of that list.
+ */
+Task&
+Model::curse_below_coord(void)
+{
+	return cursor_set(cursor().below_coord());
+}
+
+/* _below_supord() {{{2
+ * 	Curses downward traversing the hierarchy.
+ * 	If the cursor is on the last element of the list,
+ * 	it will jump to the next list of the containing hierarchy
+ * 	If the cursor is on a task with children,
+ * 	it will curse to the first child.
+ */
+Task&
+Model::curse_below_supord(void)
+{
+	return cursor_set(cursor().below_supord());
+}
+
+/* _out() {{{2
+ * 	Curse to the containing list.
+ */
+Task&
+Model::curse_out(void)
+{
+	if (cursor().has_parent())
+	    return cursor_set(cursor().parent());
+	else
+	    return cursor();
+}
+
+/* _in() {{{2
+ * 	Curse to the contained list.
+ */
+Task&
+Model::curse_in(void)
+{
+	if (cursor().has_children())
+	    return cursor_set(cursor().children());
+	else
+	    return cursor();
 }
 
 /* vi: set ts=8 sw=8 noexpandtab tw=79: */

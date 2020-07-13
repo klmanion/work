@@ -33,6 +33,56 @@ Normal::Normal()
 			    }
 		    },
 
+		    { 'j',	"move-down",	[this](int rep)
+			    {
+				_model->curse_below_coord();
+				return 1;
+			    }
+		    },
+
+		    { 'J',	"move-below",	[this](int rep)
+			    {
+				_model->curse_below_supord();
+				return 1;
+			    }
+		    },
+
+		    { 'k',	"move-up",	[this](int rep)
+			    {
+				_model->curse_above_coord();
+				return 1;
+			    }
+		    },
+
+		    { 'K',	"move-above",	[this](int rep)
+			    {
+				_model->curse_above_supord();
+				return 1;
+			    }
+		    },
+
+		    { 'h',	"fold",	[this](int rep)
+			    {
+				if (!_model->cursor().is_folded())
+				    _model->cursor().fold();
+				else
+				    _model->curse_out();
+
+				return 1;
+			    }
+		    },
+
+		    { 'l',	"unfold",	[this](int rep)
+			    {
+				if (_model->cursor().is_folded())
+				    _model->cursor().unfold();
+				else
+				    _model->curse_in();
+
+				return 1;
+			    }
+		    },
+
 		    { (const char)NULL, "", [](int rep) { return 0;} }
 	    };
 	
