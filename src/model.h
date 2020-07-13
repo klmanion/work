@@ -19,10 +19,12 @@ public:
 	Task&	task_list (void);
 	Task&	cursor (void);
 	Task*	cursor_ptr (void);
-	void	cursor_set (Task &);
+	Task&	cursor_set (Task &);
 
 	bool	is_running (void);
 	bool	no_tasks (void);
+
+	Task&	new_task (void);
 
 	Task&	add_next (Task &);
 	Task&	add_next (void);
@@ -30,7 +32,12 @@ public:
 	Task&	add_child (Task &);
 	Task&	add_child (void);
 
-	Task&	new_task (void);
+	Task&	curse_above_coord (void);	/* coordinate movement */
+	Task&	curse_above_supord (void);	/* superordinate movement */
+	Task&	curse_below_coord (void);
+	Task&	curse_below_supord (void);
+	Task&	curse_out (void);
+	Task&	curse_in (void);
 
 private:
 	Task	*_task_list;

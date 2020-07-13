@@ -13,8 +13,13 @@
 /* default {{{3 */
 Task::Task()
 {
+	_folded = false;
+	_selected = false;
+
 	_next = (Task *)NULL;
+	_prev = (Task *)NULL;
 	_children = (Task *)NULL;
+	_parent = (Task *)NULL;
 }
 
 /* from file descriptor {{{3 */
@@ -83,53 +88,49 @@ Task::~Task()
 	    delete _children;
 }
 
-/* predicates {{{1 */
-/* is_folded() {{{2 */
+/* accessors/mutators/predicates {{{1 */
+/* folding {{{2 */
+/* is_folded() {{{3 */
 bool
 Task::is_folded(void)
 {
 	return _folded;
 }
 
-/* is_selected() {{{2 */
+/* fold() {{{3 */
+Task&
+Task::fold(void)
+{
+	_folded = true;
+
+	return *this;
+}
+
+/* unfold() {{{3 */
+Task&
+Task::unfold(void)
+{
+	_folded = false;
+
+	return *this;
+}
+
+/* fold_toggle() {{{3 */
+Task&
+Task::fold_toggle(void)
+{
+	return is_folded() ? unfold() : fold();
+}
+
+/* selecting {{{2 */
+/* is_selected() {{{3 */
 bool
 Task::is_selected(void)
 {
 	return _selected;
 }
 
-/* is_cursed_over() {{{2 */
-bool
-Task::is_cursed_over(void)
-{
-	return Model::get_instance()->cursor_ptr() == this;
-}
-
-/* cdr actions {{{1 */
-/* add_next() {{{2 */
-Task&
-Task::add_next(
-    Task	&task)
-{
-	if (!_next)
-	    return *(_next = &task);
-	else
-	    return _next->add_next(task);
-}
-
-/* add_child() {{{2 */
-Task&
-Task::add_child(
-    Task	&task)
-{
-	if (!_children)
-	    return *(_children = &task);
-	else
-	    return _children->add_next(task);
-}
-
-/* selection {{{1 */
-/* select() {{{2 */
+/* select() {{{3 */
 Task&
 Task::select(void)
 {
@@ -138,7 +139,7 @@ Task::select(void)
 	return *this;
 }
 
-/* deselect() {{{2 */
+/* deselect() {{{3 */
 Task&
 Task::deselect(void)
 {
@@ -147,11 +148,290 @@ Task::deselect(void)
 	return *this;
 }
 
-/* select_toggle() {{{2 */
+/* select_toggle() {{{3 */
 Task&
 Task::select_toggle(void)
 {
 	return is_selected() ? deselect() : select();
+}
+
+/* tag {{{2 */
+/* has_tag() {{{3 */
+bool
+Task::has_tag(void)
+{
+	return !_tag.empty();
+}
+
+/* tag() {{{3 */
+string&
+Task::tag(void)
+{
+	return _tag;
+}
+
+/* tag_set() {{{3 */
+string&
+Task::tag_set(
+    string	&tag)
+{
+	return (_tag = tag);
+}
+
+/* description {{{2 */
+/* has_description() {{{3 */
+bool
+Task::has_description(void)
+{
+	return !_desc.empty();
+}
+
+/* description() {{{3 */
+string&
+Task::description(void)
+{
+	return _desc;
+}
+
+/* description_set() {{{3 */
+string&
+Task::description_set(
+    string	&desc)
+{
+	return (_desc = desc);
+}
+
+/* next {{{2 */
+/* has_next() {{{3 */
+bool
+Task::has_next(void)
+{
+	return !!_next;
+}
+
+/* next() {{{3 */
+Task&
+Task::next(void)
+{
+	return *_next;
+}
+
+Task&
+Task::next_tail(void)
+{
+	if (has_next())
+	    return next().next_tail();
+	else
+	    return *this;
+}
+
+/* next_set() {{{3 */
+Task&
+Task::next_set(
+    Task	&next)
+{
+	next.prev_set(*this);
+	return *(_next = &next);
+}
+
+/* next_add() {{{3 */
+Task&
+Task::next_add(
+    Task	&task)
+{
+	if (!has_next())
+	    {
+		return next_set(task);
+	    }
+	else
+	    {
+		return next().next_add(task);
+	    }
+}
+
+/* prev {{{2 */
+/* has_prev() {{{3 */
+bool
+Task::has_prev(void)
+{
+	return !!_prev;
+}
+
+/* prev() {{{3 */
+Task&
+Task::prev(void)
+{
+	return *_prev;
+}
+
+/* prev_set() {{{3 */
+Task&
+Task::prev_set(
+    Task	&prev)
+{
+	return *(_prev = &prev);
+}
+
+/* children {{{2 */
+/* has_children() {{{3 */
+bool
+Task::has_children(void)
+{
+	return !!_children;
+}
+
+/* children() {{{3 */
+Task&
+Task::children(void)
+{
+	return *_children;
+}
+
+/* _tail() {{{3 */
+Task&
+Task::children_tail(void)
+{
+	return children().next_tail();
+}
+
+/* _set() {{{3 */
+Task&
+Task::children_set(
+    Task	&children)
+{
+	return *(_children = &children);
+}
+
+/* child_add() {{{3 */
+Task&
+Task::child_add(
+    Task	&task)
+{
+	task.parent_set(*this);
+
+	if (!has_children())
+	    return children_set(task);
+	else
+	    return children().next_add(task);
+}
+
+/* parent {{{2 */
+/* has_parent() {{{3 */
+bool
+Task::has_parent(void)
+{
+	return !!_parent;
+}
+
+/* parent() {{{3 */
+Task&
+Task::parent(void)
+{
+	return *_parent;
+}
+
+/* parent_set() {{{3 */
+Task&
+Task::parent_set(
+    Task	&parent)
+{
+	return *(_parent = &parent);
+}
+/* misc. predicates {{{2 */
+/* is_cursed_over() {{{3 */
+bool
+Task::is_cursed_over(void)
+{
+	return Model::get_instance()->cursor_ptr() == this;
+}
+
+/* above/below {{{1 */
+/* above_coord() {{{2
+ * 	Returns task above this on the same ordinal.
+ * 	If there is no previous task in the same ordinal,
+ * 	this is returned.
+ */
+Task&
+Task::above_coord(void)
+{
+	if (has_prev())
+	    return prev();
+	else
+	    return *this;
+}
+
+/* above_supord() {{{2
+ * 	Returns the task above this across the hierarchy.
+ * 	If there is no previous task,
+ * 	the parent is returned,
+ * 	unless there is no parent,
+ * 	in which case this is returned.
+ * 	If there is a previous task,
+ * 	either it or its last child will be returned,
+ * 	conditional on the existence of its children.
+ */
+Task&
+Task::above_supord(void)
+{
+	if (!has_prev())
+	    {
+		if (has_parent())
+		    return parent();
+		else
+		    return *this;
+	    }
+	else
+	    {
+		if (prev().has_children())
+		    return prev().children_tail();
+		else
+		    return prev();
+	    }
+}
+
+/* below_coord() {{{2
+ * 	Returns task below this on the same ordinal.
+ * 	If there is no subsequent task in the same ordinal,
+ * 	this is returned.
+ */
+Task&
+Task::below_coord(void)
+{
+	if (has_next())
+	    return next();
+	else
+	    return *this;
+}
+
+/* below_supord() {{{2
+ * 	Returns the task below this across hierarchy.
+ * 	If the current task has children,
+ * 	the first child is returned;
+ * 	otherwise, the next task is returned.
+ * 	If there is no next task,
+ * 	the parent's next task is returned.
+ * 	If the parent has no next task,
+ * 	this is returned.
+ */
+Task&
+Task::below_supord(void)
+{
+	if (has_children())
+	    {
+		return children();
+	    }
+	else if (has_next())
+	    {
+		return next();
+	    }
+	else if (has_parent() && parent().has_next())
+	    {
+		return parent().next();
+	    }
+	else
+	    {
+		return *this;
+	    }
 }
 
 /* printing {{{1 */
@@ -172,7 +452,7 @@ Task::print(
 		if (is_selected())
 		    wattron(stdscr, A_BOLD);
 
-		if (!_children)
+		if (!has_children())
 		    addch(' ');
 		else if (is_folded())
 		    addch('+');
@@ -182,9 +462,9 @@ Task::print(
 		if (is_cursed_over())
 		    wattron(stdscr, A_UNDERLINE);
 
-		printw("%s", _tag.c_str());
-		if (_desc.c_str())
-		    printw(" - %s", _desc.c_str());
+		printw("%s", tag().c_str());
+		if (has_description())
+		    printw(" - %s", description().c_str());
 
 
 		if (is_cursed_over())
@@ -196,11 +476,11 @@ Task::print(
 		move(++y,x);
 	    }
 
-	if (!is_folded() && _children)
-	    _children->print(lvl+1);
+	if (!is_folded() && has_children())
+	    children().print(lvl+1);
 
-	if (_next)
-	    _next->print(lvl);
+	if (has_next())
+	    next().print(lvl);
 }
 
 /* }}}1 */
