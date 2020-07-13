@@ -231,6 +231,7 @@ Task::next_set(
     Task	&next)
 {
 	next.prev_set(*this);
+	next.parent_set(parent());
 	return *(_next = &next);
 }
 
