@@ -45,7 +45,7 @@ ncurses_initialize(void)
 	initscr();
 	cbreak();
 	keypad(stdscr, TRUE);
-	nonl();
+	nl();
 	noecho();
 	curs_set(0);
 	refresh();

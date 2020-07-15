@@ -450,15 +450,15 @@ Task::print(
 		for (int i=lvl; i>0; --i)
 		    printw("|");
 
-		if (is_selected())
-		    wattron(stdscr, A_BOLD);
-
 		if (!has_children())
 		    addch(' ');
 		else if (is_folded())
 		    addch('+');
 		else
 		    addch('-');
+
+		if (is_selected())
+		    wattron(stdscr, A_BOLD);
 
 		if (is_cursed_over())
 		    wattron(stdscr, A_UNDERLINE);
