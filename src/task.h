@@ -34,6 +34,11 @@ public:
 	Task&	deselect (void);
 	Task&	select_toggle (void);
 
+	bool	is_completed (void);
+	Task&	complete (void);
+	Task&	uncomplete (void);
+	Task&	complete_toggle (void);
+
 	bool	has_next (void);
 	Task&	next (void);
 	Task&	next_tail (void);
@@ -68,6 +73,7 @@ public:
 private:
 	bool	_folded;
 	bool	_selected;
+	bool	_completed;
 
 	string	_tag;
 	string	_desc;

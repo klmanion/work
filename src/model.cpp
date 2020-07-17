@@ -10,11 +10,11 @@
 
 /* genetic functs {{{1 */
 /* get_instance() {{{2 */
-Model*
+Model&
 Model::get_instance(void)
 {
 	static Model model;
-	return &model;
+	return model;
 }
 
 /* ctor {{{2 */
@@ -23,6 +23,7 @@ Model::Model()
 	_task_list = (Task *)NULL;
 
 	_running = true;
+
 }
 
 /* dtor {{{2 */
@@ -60,6 +61,13 @@ Model::cursor_set(
     Task	&task)
 {
 	return *(_cursor = &task);
+}
+
+/* view_options accessor {{{2 */
+Viewopts&
+Model::view_options(void)
+{
+	return _viewopts;
 }
 
 /* predicates {{{1 */

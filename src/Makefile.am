@@ -11,6 +11,6 @@ endif
 AM_LDFLAGS = -lncurses
 
 bin_PROGRAMS = work
-work_SOURCES = main.cpp task.cpp model.cpp \
+work_SOURCES = main.cpp task.cpp model.cpp viewopts.cpp \
 	       mode.cpp modes/normal.cpp
 

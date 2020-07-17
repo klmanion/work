@@ -5,11 +5,12 @@
 #define _MODEL_H_
 
 #include "task.h"
+#include "viewopts.h"
 
 class Model
 {
 public:
-	static	Model*	get_instance (void);
+	static	Model&	get_instance (void);
 	~Model();
 
 private:
@@ -17,12 +18,15 @@ private:
 
 public:
 	Task&	task_list (void);
+
 	Task&	cursor (void);
 	Task*	cursor_ptr (void);
 	Task&	cursor_set (Task &);
 
 	bool	is_running (void);
 	bool	no_tasks (void);
+
+	Viewopts&	view_options (void);
 
 	Task&	new_task (void);
 
@@ -44,6 +48,8 @@ private:
 	Task	*_cursor;
 
 	bool	_running;
+
+	Viewopts	_viewopts;
 };
 
 #endif /* !_MODEL_H_ */

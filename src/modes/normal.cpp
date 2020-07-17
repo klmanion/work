@@ -19,7 +19,7 @@ Normal::Normal()
 			    }
 		    },
 
-		    { 'c',	"add-child",	[this](int rep)
+		    { 'n',	"add-child",	[this](int rep)
 			    {
 				_model->add_child();
 				return 1;
@@ -61,7 +61,7 @@ Normal::Normal()
 			    }
 		    },
 
-		    { 'h',	"fold",	[this](int rep)
+		    { 'h',	"move-out",	[this](int rep)
 			    {
 				if (!_model->cursor().is_folded())
 				    _model->cursor().fold();
@@ -72,7 +72,7 @@ Normal::Normal()
 			    }
 		    },
 
-		    { 'l',	"unfold",	[this](int rep)
+		    { 'l',	"move-in",	[this](int rep)
 			    {
 				if (_model->cursor().is_folded())
 				    _model->cursor().unfold();
@@ -83,9 +83,17 @@ Normal::Normal()
 			    }
 		    },
 
-		    { '\n',	"select",	[this](int rep)
+		    { 'c',	"complete",	[this](int rep)
 			    {
-				_model->cursor().select_toggle();
+				_model->cursor().complete_toggle();
+				_model->curse_out();
+				return 1;
+			    }
+		    },
+
+		    { 'C',	"show-completed",	[this](int rep)
+			    {
+				_model->view_options().show_completed_toggle();
 				return 1;
 			    }
 		    },
@@ -98,11 +106,7 @@ Normal::Normal()
 }
 
 /* virtual functs {{{1 */
-/* loop() {{{2
- * 	Returning nullptr causes no change in mode.
- * 	Returning a mode object switches the active mode.
- * 	Upon mode switch, the mode is destroyed.
- */
+/* loop() {{{2 */
 void
 Normal::loop(void)
 {

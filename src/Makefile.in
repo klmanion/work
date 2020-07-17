@@ -103,7 +103,7 @@ am__installdirs = "$(DESTDIR)$(bindir)"
 PROGRAMS = $(bin_PROGRAMS)
 am__dirstamp = $(am__leading_dot)dirstamp
 am_work_OBJECTS = main.$(OBJEXT) task.$(OBJEXT) model.$(OBJEXT) \
-	mode.$(OBJEXT) modes/normal.$(OBJEXT)
+	viewopts.$(OBJEXT) mode.$(OBJEXT) modes/normal.$(OBJEXT)
 work_OBJECTS = $(am_work_OBJECTS)
 work_LDADD = $(LDADD)
 AM_V_P = $(am__v_P_@AM_V@)
@@ -123,7 +123,7 @@ depcomp = $(SHELL) $(top_srcdir)/build-aux/depcomp
 am__maybe_remake_depfiles = depfiles
 am__depfiles_remade = ./$(DEPDIR)/main.Po ./$(DEPDIR)/mode.Po \
 	./$(DEPDIR)/model.Po ./$(DEPDIR)/task.Po \
-	modes/$(DEPDIR)/normal.Po
+	./$(DEPDIR)/viewopts.Po modes/$(DEPDIR)/normal.Po
 am__mv = mv -f
 CXXCOMPILE = $(CXX) $(DEFS) $(DEFAULT_INCLUDES) $(INCLUDES) \
 	$(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -265,7 +265,7 @@ top_srcdir = @top_srcdir@
 @DEBUG_FALSE@AM_CPPFLAGS = -DNDEBUG
 @DEBUG_TRUE@AM_CPPFLAGS = -DDEBUG
 AM_LDFLAGS = -lncurses
-work_SOURCES = main.cpp task.cpp model.cpp \
+work_SOURCES = main.cpp task.cpp model.cpp viewopts.cpp \
 	       mode.cpp modes/normal.cpp
 
 all: all-am
@@ -367,6 +367,7 @@ distclean-compile:
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/mode.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/model.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/task.Po@am__quote@ # am--include-marker
+@AMDEP_TRUE@@am__include@ @am__quote@./$(DEPDIR)/viewopts.Po@am__quote@ # am--include-marker
 @AMDEP_TRUE@@am__include@ @am__quote@modes/$(DEPDIR)/normal.Po@am__quote@ # am--include-marker
 
 $(am__depfiles_remade):
@@ -524,6 +525,7 @@ distclean: distclean-am
 	-rm -f ./$(DEPDIR)/mode.Po
 	-rm -f ./$(DEPDIR)/model.Po
 	-rm -f ./$(DEPDIR)/task.Po
+	-rm -f ./$(DEPDIR)/viewopts.Po
 	-rm -f modes/$(DEPDIR)/normal.Po
 	-rm -f Makefile
 distclean-am: clean-am distclean-compile distclean-generic \
@@ -574,6 +576,7 @@ maintainer-clean: maintainer-clean-am
 	-rm -f ./$(DEPDIR)/mode.Po
 	-rm -f ./$(DEPDIR)/model.Po
 	-rm -f ./$(DEPDIR)/task.Po
+	-rm -f ./$(DEPDIR)/viewopts.Po
 	-rm -f modes/$(DEPDIR)/normal.Po
 	-rm -f Makefile
 maintainer-clean-am: distclean-am maintainer-clean-generic

@@ -15,6 +15,7 @@ Task::Task()
 {
 	_folded = false;
 	_selected = false;
+	_completed = false;
 
 	_next = (Task *)NULL;
 	_prev = (Task *)NULL;
@@ -122,7 +123,7 @@ Task::fold_toggle(void)
 	return is_folded() ? unfold() : fold();
 }
 
-/* selecting {{{2 */
+/* selection {{{2 */
 /* is_selected() {{{3 */
 bool
 Task::is_selected(void)
@@ -153,6 +154,39 @@ Task&
 Task::select_toggle(void)
 {
 	return is_selected() ? deselect() : select();
+}
+
+/* completion {{{2 */
+/* is_completed() {{{3 */
+bool
+Task::is_completed(void)
+{
+	return _completed;
+}
+
+/* complete() {{{3 */
+Task&
+Task::complete(void)
+{
+	_completed = true;
+
+	return *this;
+}
+
+/* uncomplete() {{{3 */
+Task&
+Task::uncomplete(void)
+{
+	_completed = false;
+
+	return *this;
+}
+
+/* complete_toggle() {{{3 */
+Task&
+Task::complete_toggle(void)
+{
+	return _completed ? uncomplete() : complete();
 }
 
 /* tag {{{2 */
@@ -343,7 +377,7 @@ Task::parent_set(
 bool
 Task::is_cursed_over(void)
 {
-	return Model::get_instance()->cursor_ptr() == this;
+	return Model::get_instance().cursor_ptr() == this;
 }
 
 /* above/below {{{1 */
@@ -442,42 +476,58 @@ Task::print(
     int	lvl)
 {
 	int y,x;
+	bool show_completed;
 
 	if (!_tag.empty())
 	    {
 		getyx(stdscr, y,x);
 
-		for (int i=lvl; i>0; --i)
-		    printw("|");
+		show_completed = Model::get_instance()
+			.view_options()
+			.show_completed();
 
-		if (!has_children())
-		    addch(' ');
-		else if (is_folded())
-		    addch('+');
-		else
-		    addch('-');
+		if (!is_completed() || show_completed)
+		    {
+			for (int i=lvl; i>0; --i)
+			    printw("|");
+
+			if (!has_children())
+			    addch(' ');
+			else if (is_folded())
+			    addch('+');
+			else
+			    addch('-');
+		    }
 
 		if (is_selected())
-		    wattron(stdscr, A_BOLD);
+		    wattron(stdscr, A_STANDOUT);
 
 		if (is_cursed_over())
 		    wattron(stdscr, A_UNDERLINE);
 
-		printw("%s", tag().c_str());
-		if (has_description())
-		    printw(" - %s", description().c_str());
+		if (show_completed && !is_completed())
+		    wattron(stdscr, A_BOLD);
 
+		if (!is_completed() || show_completed)
+		    {
+			printw("%s", tag().c_str());
+			if (has_description())
+			    printw(" - %s", description().c_str());
+
+			move(++y,x);
+		    }
+		    
+		if (show_completed && !is_completed())
+		    wattroff(stdscr, A_BOLD);
 
 		if (is_cursed_over())
 		    wattroff(stdscr, A_UNDERLINE);
 
 		if (is_selected())
-		    wattroff(stdscr, A_BOLD);
-
-		move(++y,x);
+		    wattroff(stdscr, A_STANDOUT);
 	    }
 
-	if (!is_folded() && has_children())
+	if (!is_completed() && !is_folded() && has_children())
 	    children().print(lvl+1);
 
 	if (has_next())
