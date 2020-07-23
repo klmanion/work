@@ -98,6 +98,13 @@ Normal::Normal()
 			    }
 		    },
 
+		    { '\n',	"select",	[this](int rep)
+			    {
+				_model->cursor().select_toggle();
+				return 1;
+			    }
+		    },
+
 		    { (const char)NULL, "", [](int rep) { return 0;} }
 	    };
 	
